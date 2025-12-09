@@ -21,7 +21,7 @@
       el.classList.add('revealed');
     }
 
-    if ('IntersectionObserver' in window && revealEls.length > 0) {
+    if ('IntersectionObserver' in globalThis && revealEls.length > 0) {
       const io = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {

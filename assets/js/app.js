@@ -16,12 +16,12 @@
   async function estimate(){
     if(!form) return;
     const data = {
-      length_mm: parseFloat(document.getElementById('len').value || 0),
-      width_mm: parseFloat(document.getElementById('wid').value || 0),
-      height_mm: parseFloat(document.getElementById('hei').value || 0),
-      filament_id: parseInt(document.getElementById('filament-select').value || 0),
-      nozzle_size: parseFloat(document.getElementById('nozzle-select').value || 0.4),
-      layer_height: parseFloat(document.getElementById('layer-select').value || 0.2),
+      length_mm: Number.parseFloat(document.getElementById('len').value || 0),
+      width_mm: Number.parseFloat(document.getElementById('wid').value || 0),
+      height_mm: Number.parseFloat(document.getElementById('hei').value || 0),
+      filament_id: Number.parseInt(document.getElementById('filament-select').value || 0),
+      nozzle_size: Number.parseFloat(document.getElementById('nozzle-select').value || 0.4),
+      layer_height: Number.parseFloat(document.getElementById('layer-select').value || 0.2),
       promo: document.getElementById('promo') ? document.getElementById('promo').value : '' ,
       manual: !!(document.getElementById('manual_desc') && document.getElementById('manual_desc').value.trim())
     };
@@ -46,13 +46,13 @@
         firstname: form.firstname?.value || '',
         lastname: form.lastname?.value || '',
         email: form.email?.value || '',
-        printer_id: parseInt(document.getElementById('printer-select').value||0),
-        length_mm: parseInt(document.getElementById('len').value||0),
-        width_mm: parseInt(document.getElementById('wid').value||0),
-        height_mm: parseInt(document.getElementById('hei').value||0),
-        filament_id: parseInt(document.getElementById('filament-select').value||0),
-        nozzle_size: parseFloat(document.getElementById('nozzle-select').value||0.4),
-        layer_height: parseFloat(document.getElementById('layer-select').value||0.2),
+        printer_id: Number.parseInt(document.getElementById('printer-select').value||0),
+        length_mm: Number.parseInt(document.getElementById('len').value||0),
+        width_mm: Number.parseInt(document.getElementById('wid').value||0),
+        height_mm: Number.parseInt(document.getElementById('hei').value||0),
+        filament_id: Number.parseInt(document.getElementById('filament-select').value||0),
+        nozzle_size: Number.parseFloat(document.getElementById('nozzle-select').value||0.4),
+        layer_height: Number.parseFloat(document.getElementById('layer-select').value||0.2),
         promo: document.getElementById('promo')?.value||'',
         price_estimate: priceEl ? priceEl.textContent || '0.00' : '0.00'
       };
@@ -82,7 +82,7 @@
     const items = JSON.parse(localStorage.getItem('neptune_cart') || '[]');
     let total = 0;
     list.innerHTML = items.map(it=>{
-      const price = parseFloat((it.price_estimate||'0').replace(' €','')) || 0; total += price;
+      const price = Number.parseFloat((it.price_estimate||'0').replace(' €','')) || 0; total += price;
       return `<div class="card"><h4>Item #${it.id} — ${it.price_estimate}</h4><p class="muted">${it.firstname} ${it.lastname} — ${it.email}</p></div>`;
     }).join('');
     const totEl = document.getElementById('cart-total');
@@ -114,22 +114,22 @@
       ev.preventDefault();
 
       const payload = {
-        csrf: (window.FABLAB_CSRF || document.querySelector('input[name="csrf_token"]')?.value || '' ),
+        csrf: (globalThis.FABLAB_CSRF || document.querySelector('input[name="csrf_token"]')?.value || '' ),
         firstname: form.firstname?.value || '',
         lastname: form.lastname?.value || '',
         email: form.email?.value || '',
         phone: form.phone?.value || '',
-        printer_id: parseInt(document.getElementById('printer-select')?.value || 0),
-        length_mm: parseInt(document.getElementById('len')?.value || 0),
-        width_mm: parseInt(document.getElementById('wid')?.value || 0),
-        height_mm: parseInt(document.getElementById('hei')?.value || 0),
-        filament_id: parseInt(document.getElementById('filament-select')?.value || 0),
-        nozzle_size: parseFloat(document.getElementById('nozzle-select')?.value || 0.4),
-        layer_height: parseFloat(document.getElementById('layer-select')?.value || 0.2),
-        qty: parseInt(document.getElementById('qty')?.value || 1),
+        printer_id: Number.parseInt(document.getElementById('printer-select')?.value || 0),
+        length_mm: Number.parseInt(document.getElementById('len')?.value || 0),
+        width_mm: Number.parseInt(document.getElementById('wid')?.value || 0),
+        height_mm: Number.parseInt(document.getElementById('hei')?.value || 0),
+        filament_id: Number.parseInt(document.getElementById('filament-select')?.value || 0),
+        nozzle_size: Number.parseFloat(document.getElementById('nozzle-select')?.value || 0.4),
+        layer_height: Number.parseFloat(document.getElementById('layer-select')?.value || 0.2),
+        qty: Number.parseInt(document.getElementById('qty')?.value || 1),
         promo: document.getElementById('promo')?.value || '',
         manual_desc: document.getElementById('manual_desc')?.value || '',
-        total_estimate: parseFloat((priceEl?.textContent || '0').replace(' €','')) || 0.0
+        total_estimate: Number.parseFloat((priceEl?.textContent || '0').replace(' €','')) || 0.0
       };
 
       try {
@@ -137,7 +137,7 @@
         if (resp && resp.ok) {
           alert('Commande soumise ! ID: ' + resp.order_id);
           // optionally redirect to a thank-you page
-          window.location.href = '/public/thankyou.php?order=' + encodeURIComponent(resp.order_id);
+          globalThis.location.href = '/public/thankyou.php?order=' + encodeURIComponent(resp.order_id);
         } else {
           // unexpected but handle
           console.warn('Submit returned unexpected payload', resp);

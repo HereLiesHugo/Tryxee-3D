@@ -45,11 +45,11 @@
         length_mm: Number(document.getElementById('len')?.value || 0),
         width_mm: Number(document.getElementById('wid')?.value || 0),
         height_mm: Number(document.getElementById('hei')?.value || 0),
-        filament_id: parseInt(document.getElementById('filament-select')?.value || 0),
-        nozzle_size: parseFloat(document.getElementById('nozzle-select')?.value || 0.4),
-        layer_height: parseFloat(document.getElementById('layer-select')?.value || 0.2),
+        filament_id: Number.parseInt(document.getElementById('filament-select')?.value || 0),
+        nozzle_size: Number.parseInt(document.getElementById('nozzle-select')?.value || 0.4),
+        layer_height: Number.parseInt(document.getElementById('layer-select')?.value || 0.2),
         promo: document.getElementById('promo')?.value || '',
-        qty: parseInt(document.getElementById('qty')?.value || 1),
+        qty: Number.parseInt(document.getElementById('qty')?.value || 1),
         manual: !!(document.getElementById('manual_desc')?.value?.trim())
       };
     }
@@ -144,7 +144,7 @@
         fileInput.value = '';
         return;
       }
-      preview.innerHTML = `<div><strong>${f.name}</strong> — ${(f.size/1024|0)} KB</div>`;
+      preview.innerHTML = `<div><strong>${f.name}</strong> — ${(Math.trunc(f.size/1024))} KB</div>`; // Not sure if I did that right, before it was just f.size/1024 | 0
     }
 
     if (dropzone) {
@@ -204,7 +204,7 @@
     }
 
     // Expose for debug
-    window.__neptune_debug = { estimate, estimateDebounced, fetchRaw };
+    globalThis.__neptune_debug = { estimate, estimateDebounced, fetchRaw };
 
   }); // DOMContentLoaded
 })();
