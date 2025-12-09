@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             // "remember me" cookie (simple): create token in DB recommended (here minimal)
                             if ($remember) {
                                 $token = bin2hex(random_bytes(32));
-                                setcookie('remember_token', $token, time() + (86400 * 30), '/', '', false, true);
+                                setcookie('remember_token', $token, time() + (86400 * 30), '/', '', true /*Why not HTTPS secure? / I set to "true" from "false", if wrong tell me why? - matisse*/ , true);
                                 // TODO: persist token hash in DB and associate with user (secure implementation)
                             }
 
